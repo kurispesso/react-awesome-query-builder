@@ -3,13 +3,18 @@ import merge from "lodash/merge";
 import {
   BasicConfig,
   // types:
-  Operators, Widgets, Fields, Config, Types, Conjunctions, Settings, LocaleSettings, OperatorProximity, Funcs, 
+  Operators, Widgets, Fields, Config, Types, Conjunctions, Settings, LocaleSettings, OperatorProximity, Funcs,
   DateTimeFieldSettings,
 } from "react-awesome-query-builder";
 import moment from "moment";
 //import en_US from 'antd/lib/locale-provider/en_US';
 //import ru_RU from 'antd/lib/locale-provider/ru_RU';
-
+// @ts-ignore
+import {RuleGroup} from "react-awesome-query-builder/components/RuleGroup";
+// @ts-ignore
+import {Group} from "react-awesome-query-builder/components/Group";
+// @ts-ignore
+import {Rule} from "react-awesome-query-builder/components/Rule";
 // @ts-ignore
 import AntdConfig from "react-awesome-query-builder/config/antd";
 // @ts-ignore
@@ -20,6 +25,14 @@ const {
   FieldCascader,
   FieldTreeSelect,
 } = AntdWidgets;
+
+console.log(Group)
+console.log(RuleGroup)
+console.log(Rule)
+
+class RuleGroupEvent extends RuleGroup {}
+class GroupEvent extends Group {}
+class RuleEvent extends Rule {}
 
 export default (skin) => {
   const InitialConfig = skin == "vanilla" ? BasicConfig : AntdConfig;
@@ -55,16 +68,86 @@ export default (skin) => {
   const operators: Operators = {
     ...InitialConfig.operators,
     // examples of  overriding
-    proximity,
-    between: {
-      ...InitialConfig.operators.between,
-      valueLabels: [
-        "Value from",
-        "Value to"
+    all: {
+      label: 'all',
+      name: 'all',
+      cardinality: 0,
+      multiple: false,
+      isUnary: true,
+      applyTo: [
+        'dictionary',
+        'number',
+        '!struct',
       ],
-      textSeparators: [
-        "from",
-        "to"
+    },
+    is: {
+      label: 'is',
+      name: 'is',
+      cardinality: 1,
+      multiple: false,
+      isUnary: true,
+      applyTo: [
+        'dictionary',
+      ],
+    },
+    lt: {
+      label: '<',
+      name: 'lt',
+      cardinality: 1,
+      multiple: false,
+      isUnary: true,
+      applyTo: [
+        'number',
+      ],
+    },
+    lte: {
+      label: '<=',
+      name: 'lte',
+      cardinality: 1,
+      multiple: false,
+      isUnary: true,
+      applyTo: [
+        'number',
+      ],
+    },
+    gt: {
+      label: '>',
+      name: 'gt',
+      cardinality: 1,
+      multiple: false,
+      isUnary: true,
+      applyTo: [
+        'number',
+      ],
+    },
+    gte: {
+      label: '>=',
+      name: 'gte',
+      cardinality: 1,
+      multiple: false,
+      isUnary: true,
+      applyTo: [
+        'number',
+      ],
+    },
+    eq: {
+      label: '==',
+      name: 'eq',
+      cardinality: 1,
+      multiple: false,
+      isUnary: true,
+      applyTo: [
+        'number',
+      ],
+    },
+    neq: {
+      label: '!=',
+      name: 'neq',
+      cardinality: 1,
+      multiple: false,
+      isUnary: true,
+      applyTo: [
+        'number',
       ],
     },
   };
@@ -72,49 +155,31 @@ export default (skin) => {
 
   const widgets: Widgets = {
     ...InitialConfig.widgets,
-    // examples of  overriding
-    text: {
-      ...InitialConfig.widgets.text,
+    number: {
+      type: 'number',
+      valueSrc: 'value',
+      //factory: (props) => <NumberWidget {...props} />,
     },
-    slider: {
-      ...InitialConfig.widgets.slider,
-      customProps: {
-        width: "300px"
-      }
-    },
-    rangeslider: {
-      ...InitialConfig.widgets.rangeslider,
-      customProps: {
-        width: "300px"
-      },
-    },
-    date: {
-      ...InitialConfig.widgets.date,
-      dateFormat: "DD.MM.YYYY",
-      valueFormat: "YYYY-MM-DD",
-    },
-    time: {
-      ...InitialConfig.widgets.time,
-      timeFormat: "HH:mm",
-      valueFormat: "HH:mm:ss",
-    },
-    datetime: {
-      ...InitialConfig.widgets.datetime,
-      timeFormat: "HH:mm",
-      dateFormat: "DD.MM.YYYY",
-      valueFormat: "YYYY-MM-DD HH:mm:ss",
+    dictionary: {
+      type: 'dictionary',
+      valueSrc: 'value',
+      //factory: (props) => <SelectWidget {...props} />,
     },
     func: {
-      ...InitialConfig.widgets.func,
-      customProps: {
-        showSearch: true
-      }
+      type: 'func',
+      valueSrc: 'func',
     },
-    treeselect: {
-      ...InitialConfig.widgets.treeselect,
+    field: {
+      valueSrc: 'field',
+      //factory: (props) => <ValueFieldWidget {...props} />,
+      formatValue: (val, fieldDef, wgtDef, isForDisplay, valFieldDef) => {
+        return isForDisplay ? (valFieldDef.label || val) : val
+      },
+      valueLabel: 'Field to compare',
+      valuePlaceholder: 'Select field to compare',
       customProps: {
-        showSearch: true
-      }
+        showSearch: true,
+      },
     },
   };
 
@@ -122,24 +187,21 @@ export default (skin) => {
   const types: Types = {
     ...InitialConfig.types,
     // examples of  overriding
-    boolean: merge(InitialConfig.types.boolean, {
+    dictionary: {
       widgets: {
-        boolean: {
-          widgetProps: {
-            hideOperator: true,
-            operatorInlineLabel: "is"
-          },
-          opProps: {
-            equal: {
-              label: "is"
-            },
-            not_equal: {
-              label: "is not"
-            }
-          }
+        dictionary: {
+          operators:  ['all', 'is'],
         },
       },
-    }),
+    },
+    number: {
+      valueSources: ['value'],
+      widgets: {
+        number: {
+          operators: ['all', 'gte', 'lte', 'gt', 'lt', 'eq', 'neq'],
+        },
+      },
+    },
   };
 
 
@@ -178,7 +240,9 @@ export default (skin) => {
   const settings: Settings = {
     ...InitialConfig.settings,
     ...localeSettings,
-
+    classRuleGroup: RuleGroupEvent,
+    classGroup: GroupEvent,
+    classRule: RuleEvent,
     valueSourcesInfo: {
       value: {
         label: "Value"
@@ -208,247 +272,228 @@ export default (skin) => {
   //////////////////////////////////////////////////////////////////////
 
   const fields: Fields = {
-    user: {
-      label: "User",
-      tooltip: "Group of fields",
-      type: "!struct",
-      subfields: {
-        firstName: {
-          label2: "Username", //only for menu's toggler
-          type: "text",
-          excludeOperators: ["proximity"],
-          fieldSettings: {
-            validateValue: (val, fieldSettings) => {
-              return (val.length < 10);
-            },
-          },
-          mainWidgetProps: {
-            valueLabel: "Name",
-            valuePlaceholder: "Enter name",
-          },
+    "1": {
+      "label": "Event 1",
+      "type":"!group",
+      "subfields": {
+        "1": {
+          "label": "Param 1 (as number)",
+          "type": "number",
+          "defaultOperator": "all",
+          "order": 1,
+          "valueSources": [
+            "value"
+          ]
         },
-        login: {
-          type: "text",
-          tableName: "t1", // PR #18, PR #20
-          excludeOperators: ["proximity"],
-          fieldSettings: {
-            validateValue: (val, fieldSettings) => {
-              return (val.length < 10 && (val === "" || val.match(/^[A-Za-z0-9_-]+$/) !== null));
-            },
-          },
-          mainWidgetProps: {
-            valueLabel: "Login",
-            valuePlaceholder: "Enter login",
-          },
+        "73": {
+          "label": "Param 2 (as number)",
+          "type": "number",
+          "defaultOperator": "all",
+          "order": 2,
+          "valueSources": [
+            "value"
+          ]
+        },
+        "74": {
+          "label": "Param 3 (as dictionary)",
+          "type": "dictionary",
+          "defaultOperator": "all",
+          "order": 3,
+          "valueSources": [
+            "value"
+          ],
+          "options": {
+            "dictionary": [
+              {
+                "value": "11:43:40",
+                "title": "11:43:40"
+              },
+              {
+                "value": "11:37:48",
+                "title": "11:37:48"
+              },
+              {
+                "value": "08:10:18",
+                "title": "08:10:18"
+              },
+              {
+                "value": "07:09:46",
+                "title": "07:09:46"
+              }
+            ]
+          }
+        },
+        "75": {
+          "label": "Param 4 (as dictionary)",
+          "type": "dictionary",
+          "defaultOperator": "all",
+          "order": 4,
+          "valueSources": [
+            "value"
+          ],
+          "options": {
+            "dictionary": [
+              {
+                "value": "2.2.1",
+                "title": "2.2.1"
+              },
+              {
+                "value": "2.0.1",
+                "title": "2.0.1"
+              },
+              {
+                "value": "2.1.0",
+                "title": "2.1.0"
+              },
+              {
+                "value": "2.7.2",
+                "title": "2.7.2"
+              }
+            ]
+          }
+        },
+        "104": {
+          "label": "Param 5 (as number)",
+          "type": "number",
+          "defaultOperator": "all",
+          "order": 4,
+          "valueSources": [
+            "value"
+          ]
+        },
+        "250": {
+          "label": "Param 5 (as dictionary)",
+          "type": "dictionary",
+          "defaultOperator": "all",
+          "order": 5,
+          "valueSources": [
+            "value"
+          ],
+          "options": {
+            "dictionary": [
+              {
+                "value": "2.2.2",
+                "title": "2.2.2"
+              }
+            ]
+          }
+        },
+        "any": {
+          "label": "Any param",
+          "type": "!struct",
+          "order": 0,
+          "operators": [
+            {
+              "label": "any",
+              "name": "any",
+              "cardinality": 0,
+              "multiple": false,
+              "isUnary": true,
+              "applyTo": [
+                "!struct"
+              ]
+            }
+          ],
+          "valueSources": [
+            "value"
+          ]
         }
       }
     },
-    results: {
-      label: "Results",
-      type: "!group",
-      subfields: {
-        product: {
-          type: "select",
-          fieldSettings: {
-            listValues: ["abc", "def", "xyz"],
-          },
-          valueSources: ["value"],
+    "9": {
+      "label": "Event 2",
+      "type":"!group",
+      "subfields": {
+        "82": {
+          "label": "Param 1 (as number)",
+          "type": "number",
+          "defaultOperator": "all",
+          "order": 1,
+          "valueSources": [
+            "value"
+          ]
         },
-        score: {
-          type: "number",
-          fieldSettings: {
-            min: 0,
-            max: 100,
-          },
-          valueSources: ["value"],
+        "83": {
+          "label": "Param 2 (as dictionary)",
+          "type": "dictionary",
+          "defaultOperator": "all",
+          "order": 2,
+          "valueSources": [
+            "value"
+          ],
+          "options": {
+            "dictionary": [
+              {
+                "value": "11:37:48",
+                "title": "11:37:48"
+              },
+              {
+                "value": "08:10:18",
+                "title": "08:10:18"
+              },
+              {
+                "value": "07:09:46",
+                "title": "07:09:46"
+              }
+            ]
+          }
+        },
+        "84": {
+          "label": "Param 3 (as dictionary)",
+          "type": "dictionary",
+          "defaultOperator": "all",
+          "order": 3,
+          "valueSources": [
+            "value"
+          ],
+          "options": {
+            "dictionary": [
+              {
+                "value": "2.7.3",
+                "title": "2.7.3"
+              },
+              {
+                "value": "2.1.0",
+                "title": "2.1.0"
+              },
+              {
+                "value": "2.0.1",
+                "title": "2.0.1"
+              }
+            ]
+          }
+        },
+        "109": {
+          "label": "Param 4 (as number)",
+          "type": "number",
+          "defaultOperator": "all",
+          "order": 4,
+          "valueSources": [
+            "value"
+          ]
+        },
+        "any": {
+          "label": "Any param",
+          "type": "!struct",
+          "order": 0,
+          "operators": [
+            {
+              "label": "any",
+              "name": "any",
+              "cardinality": 0,
+              "multiple": false,
+              "isUnary": true,
+              "applyTo": [
+                "!struct"
+              ]
+            }
+          ],
+          "valueSources": [
+            "value"
+          ]
         }
       }
-    },
-    prox1: {
-      label: "prox",
-      tooltip: "Proximity search",
-      type: "text",
-      operators: ["proximity"],
-    },
-    num: {
-      label: "Number",
-      type: "number",
-      preferWidgets: ["number"],
-      fieldSettings: {
-        min: -1,
-        max: 5
-      },
-      funcs: ["LINEAR_REGRESSION"],
-    },
-    slider: {
-      label: "Slider",
-      type: "number",
-      preferWidgets: ["slider", "rangeslider"],
-      valueSources: ["value", "field"],
-      fieldSettings: {
-        min: 0,
-        max: 100,
-        step: 1,
-        marks: {
-          0: <strong>0%</strong>,
-          100: <strong>100%</strong>
-        },
-        validateValue: (val, fieldSettings) => {
-          return (val < 50 ? null : "Invalid slider value, see validateValue()");
-        },
-      },
-      //overrides
-      widgets: {
-        slider: {
-          widgetProps: {
-            valuePlaceholder: "..Slider",
-          }
-        },
-        rangeslider: {
-          widgetProps: {
-            valueLabels: [
-              { label: "Number from", placeholder: "from" },
-              { label: "Number to", placeholder: "to" },
-            ],
-          }
-        },
-      },
-    },
-    date: {
-      label: "Date",
-      type: "date",
-      valueSources: ["value"],
-      fieldSettings: {
-        dateFormat: "DD-MM-YYYY",
-        validateValue: (val, fieldSettings: DateTimeFieldSettings) => {
-          // example of date validation
-          const dateVal = moment(val, fieldSettings.valueFormat);
-          return dateVal.year() != (new Date().getFullYear()) ? "Please use current year" : null;
-        },
-      },
-    },
-    time: {
-      label: "Time",
-      type: "time",
-      valueSources: ["value"],
-      defaultOperator: "between",
-    },
-    datetime: {
-      label: "DateTime",
-      type: "datetime",
-      valueSources: ["value"]
-    },
-    datetime2: {
-      label: "DateTime2",
-      type: "datetime",
-      valueSources: ["field"]
-    },
-    color: {
-      label: "Color",
-      type: "select",
-      valueSources: ["value"],
-      fieldSettings: {
-        // * old format:
-        // listValues: {
-        //     yellow: 'Yellow',
-        //     green: 'Green',
-        //     orange: 'Orange'
-        // },
-        // * new format:
-        listValues: [
-          { value: "yellow", title: "Yellow" },
-          { value: "green", title: "Green" },
-          { value: "orange", title: "Orange" }
-        ],
-      },
-    },
-    color2: {
-      label: "Color2",
-      type: "select",
-      fieldSettings: {
-        listValues: {
-          yellow: "Yellow",
-          green: "Green",
-          orange: "Orange",
-          purple: "Purple"
-        },
-      }
-    },
-    multicolor: {
-      label: "Colors",
-      type: "multiselect",
-      fieldSettings: {
-        listValues: {
-          yellow: "Yellow",
-          green: "Green",
-          orange: "Orange"
-        },
-        allowCustomValues: true,
-      }
-    },
-    selecttree: {
-      label: "Color (tree)",
-      type: "treeselect",
-      fieldSettings: {
-        treeExpandAll: true,
-        // * deep format (will be auto converted to flat format):
-        // listValues: [
-        //     { value: "1", title: "Warm colors", children: [
-        //         { value: "2", title: "Red" },
-        //         { value: "3", title: "Orange" }
-        //     ] },
-        //     { value: "4", title: "Cool colors", children: [
-        //         { value: "5", title: "Green" },
-        //         { value: "6", title: "Blue", children: [
-        //             { value: "7", title: "Sub blue", children: [
-        //                 { value: "8", title: "Sub sub blue and a long text" }
-        //             ] }
-        //         ] }
-        //     ] }
-        // ],
-        // * flat format:
-        listValues: [
-          { value: "1", title: "Warm colors" },
-          { value: "2", title: "Red", parent: "1" },
-          { value: "3", title: "Orange", parent: "1" },
-          { value: "4", title: "Cool colors" },
-          { value: "5", title: "Green", parent: "4" },
-          { value: "6", title: "Blue", parent: "4" },
-          { value: "7", title: "Sub blue", parent: "6" },
-          { value: "8", title: "Sub sub blue and a long text", parent: "7" },
-        ],
-      }
-    },
-    multiselecttree: {
-      label: "Colors (tree)",
-      type: "treemultiselect",
-      fieldSettings: {
-        treeExpandAll: true,
-        listValues: [
-          { value: "1", title: "Warm colors", children: [
-            { value: "2", title: "Red" },
-            { value: "3", title: "Orange" }
-          ] },
-          { value: "4", title: "Cool colors", children: [
-            { value: "5", title: "Green" },
-            { value: "6", title: "Blue", children: [
-              { value: "7", title: "Sub blue", children: [
-                { value: "8", title: "Sub sub blue and a long text" }
-              ] }
-            ] }
-          ] }
-        ]
-      }
-    },
-    stock: {
-      label: "In stock",
-      type: "boolean",
-      defaultValue: true,
-      mainWidgetProps: {
-        labelYes: "+",
-        labelNo: "-"
-      }
-    },
+    }
   };
 
   //////////////////////////////////////////////////////////////////////

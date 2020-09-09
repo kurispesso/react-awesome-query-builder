@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import {
-  Query, Builder, Utils, 
+  Query, Builder, Utils,
   //types:
   ImmutableTree, Config, BuilderProps, JsonTree, JsonLogicTree
 } from "react-awesome-query-builder";
+
 import throttle from "lodash/throttle";
 import loadConfig from "./config";
 import loadedInitValue from "./init_value";
@@ -21,7 +22,7 @@ let initValue: JsonTree = loadedInitValue && Object.keys(loadedInitValue).length
 const initLogic: JsonLogicTree = loadedInitLogic && Object.keys(loadedInitLogic).length > 0 ? loadedInitLogic as JsonLogicTree : undefined;
 let initTree;
 initTree = checkTree(loadTree(initValue), loadedConfig);
-//initTree = checkTree(loadFromJsonLogic(initLogic, loadedConfig), loadedConfig); // <- this will work same  
+//initTree = checkTree(loadFromJsonLogic(initLogic, loadedConfig), loadedConfig); // <- this will work same
 
 const updateEvent = new CustomEvent("update", { detail: {
   config: loadedConfig,
@@ -50,7 +51,7 @@ export default class DemoQueryBuilder extends Component<{}, DemoQueryBuilderStat
     }
 
     state = {
-      tree: initTree, 
+      tree: initTree,
       config: loadedConfig,
       skin: initialSkin
     };
@@ -87,7 +88,7 @@ export default class DemoQueryBuilder extends Component<{}, DemoQueryBuilderStat
 
     resetValue = () => {
       this.setState({
-        tree: initTree, 
+        tree: initTree,
       });
     };
 
@@ -103,7 +104,7 @@ export default class DemoQueryBuilder extends Component<{}, DemoQueryBuilderStat
 
     clearValue = () => {
       this.setState({
-        tree: loadTree(emptyInitValue), 
+        tree: loadTree(emptyInitValue),
       });
     };
 
@@ -114,12 +115,12 @@ export default class DemoQueryBuilder extends Component<{}, DemoQueryBuilderStat
         </div>
       </div>
     )
-    
+
     onChange = (immutableTree: ImmutableTree, config: Config) => {
       this.immutableTree = immutableTree;
       this.config = config;
       this.updateResult();
-      
+
       const jsonTree = getTree(immutableTree); //can be saved to backend
     }
 
@@ -135,39 +136,39 @@ export default class DemoQueryBuilder extends Component<{}, DemoQueryBuilderStat
           {isValid ? null : <pre style={preErrorStyle}>{"Tree has errors"}</pre>}
           <br />
           <div>
-          stringFormat: 
+          stringFormat:
             <pre style={preStyle}>
               {stringify(queryString(immutableTree, config), undefined, 2)}
             </pre>
           </div>
           <hr/>
           <div>
-          humanStringFormat: 
+          humanStringFormat:
             <pre style={preStyle}>
               {stringify(queryString(immutableTree, config, true), undefined, 2)}
             </pre>
           </div>
           <hr/>
           <div>
-          sqlFormat: 
+          sqlFormat:
             <pre style={preStyle}>
               {stringify(sqlFormat(immutableTree, config), undefined, 2)}
             </pre>
           </div>
           <hr/>
           <div>
-          mongodbFormat: 
+          mongodbFormat:
             <pre style={preStyle}>
               {stringify(mongodbFormat(immutableTree, config), undefined, 2)}
             </pre>
           </div>
           <hr/>
           <div>
-            <a href="http://jsonlogic.com/play.html" target="_blank" rel="noopener noreferrer">jsonLogicFormat</a>: 
-            { errors.length > 0 
+            <a href="http://jsonlogic.com/play.html" target="_blank" rel="noopener noreferrer">jsonLogicFormat</a>:
+            { errors.length > 0
               && <pre style={preErrorStyle}>
                 {stringify(errors, undefined, 2)}
-              </pre> 
+              </pre>
             }
             { !!logic
               && <pre style={preStyle}>
@@ -182,14 +183,14 @@ export default class DemoQueryBuilder extends Component<{}, DemoQueryBuilderStat
           </div>
           <hr/>
           <div>
-          Tree: 
+          Tree:
             <pre style={preStyle}>
               {stringify(getTree(immutableTree), undefined, 2)}
             </pre>
           </div>
           {/* <hr/>
         <div>
-          queryBuilderFormat: 
+          queryBuilderFormat:
             <pre style={preStyle}>
               {stringify(queryBuilderFormat(immutableTree, config), undefined, 2)}
             </pre>

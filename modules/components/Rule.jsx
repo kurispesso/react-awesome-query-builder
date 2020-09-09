@@ -18,9 +18,7 @@ const DragIcon = () => (
   </svg>
 );
 
-@RuleContainer
-@Draggable("rule")
-class Rule extends PureComponent {
+export class Rule extends PureComponent {
     static propTypes = {
       selectedField: PropTypes.string,
       selectedOperator: PropTypes.string,
@@ -114,13 +112,13 @@ class Rule extends PureComponent {
         showDragIcon, showOperator, showOperatorLabel, showWidget, showOperatorOptions
       } = this.meta;
       const {
-        deleteLabel, renderBeforeWidget, renderAfterWidget, renderSize, 
+        deleteLabel, renderBeforeWidget, renderAfterWidget, renderSize,
         immutableGroupsMode, immutableFieldsMode, immutableOpsMode, immutableValuesMode,
         renderRuleError, showErrorMessage,
         renderButton: Btn
       } = config.settings;
 
-      const field 
+      const field
             = <FieldWrapper
               key="field"
               classname={"rule--field"}
@@ -130,7 +128,7 @@ class Rule extends PureComponent {
               parentField={this.props.parentField}
               readonly={immutableFieldsMode}
             />;
-      const operator 
+      const operator
             = <OperatorWrapper
               key="operator"
               config={config}
@@ -172,18 +170,18 @@ class Rule extends PureComponent {
               />
             </Col>;
 
-      const beforeWidget = renderBeforeWidget 
+      const beforeWidget = renderBeforeWidget
             && <Col key={"before-widget-for-" +this.props.selectedOperator} className="rule--before-widget">
               {typeof renderBeforeWidget === "function" ? renderBeforeWidget(this.props) : renderBeforeWidget}
             </Col>;
 
-      const afterWidget = renderAfterWidget 
+      const afterWidget = renderAfterWidget
             && <Col key={"after-widget-for-" +this.props.selectedOperator} className="rule--after-widget">
               {typeof renderAfterWidget === "function" ? renderAfterWidget(this.props) : renderAfterWidget}
             </Col>;
-        
+
       const oneValueError = valueError && valueError.toArray().filter(e => !!e).shift() || null;
-      const error = showErrorMessage && oneValueError 
+      const error = showErrorMessage && oneValueError
             && <div className="rule--error">
               {renderRuleError ? renderRuleError({error: oneValueError}) : oneValueError}
             </div>;
@@ -207,7 +205,7 @@ class Rule extends PureComponent {
 
       const del = (
         <div key="rule-header" className="rule--header">
-          {!immutableGroupsMode && <Btn 
+          {!immutableGroupsMode && <Btn
             type="delRule" onClick={this.removeSelf} label={deleteLabel} config={config}
           />}
         </div>
@@ -254,7 +252,7 @@ export class FieldWrapper extends PureComponent {
 class OperatorWrapper extends PureComponent {
   render() {
     const {
-      config, selectedField, selectedOperator, setOperator, 
+      config, selectedField, selectedOperator, setOperator,
       selectedFieldPartsLabels, showOperator, showOperatorLabel, selectedFieldWidgetConfig, readonly
     } = this.props;
     const operator = showOperator
@@ -287,4 +285,4 @@ class OperatorWrapper extends PureComponent {
   }
 }
 
-export default Rule;
+export default RuleContainer(Draggable("rule")(Rule));

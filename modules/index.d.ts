@@ -231,7 +231,7 @@ export interface ConjunctionOption {
 }
 
 export interface ConjsProps {
-  path: string, 
+  path: string,
   readonly?: boolean,
   disabled?: boolean,
   selectedConjunction?: string,
@@ -248,8 +248,8 @@ export interface ConjsProps {
 /////////////////
 
 export interface ButtonProps {
-  type: "addRule" | "addGroup" | "delRule" | "delGroup"  | "addRuleGroup" | "delRuleGroup", 
-  onClick(): void, 
+  type: "addRule" | "addGroup" | "delRule" | "delGroup"  | "addRuleGroup" | "delRuleGroup",
+  onClick(): void,
   label: string,
   config?: Config,
 }
@@ -265,23 +265,23 @@ export interface ProviderProps {
 }
 
 export type ValueSourceItem = {
-  label: string, 
+  label: string,
 }
 type ValueSourcesItems = TypedValueSourceMap<ValueSourceItem>;
 
 export interface ValueSourcesProps {
   config?: Config,
-  valueSources: ValueSourcesItems, 
-  valueSrc?: ValueSource, 
-  setValueSrc(valueSrc: string): void, 
+  valueSources: ValueSourcesItems,
+  valueSrc?: ValueSource,
+  setValueSrc(valueSrc: string): void,
   readonly?: boolean,
   title: string,
 }
 
 export interface ConfirmModalProps {
-  onOk(): void, 
-  okText: string, 
-  cancelText?: string, 
+  onOk(): void,
+  okText: string,
+  cancelText?: string,
   title: string,
 }
 
@@ -466,12 +466,12 @@ export type Fields = TypedMap<FieldOrGroup>;
 /////////////////
 
 export type FieldItem = {
-  items?: FieldItems, 
-  key: string, 
-  path?: string, 
-  label: string, 
-  fullLabel?: string, 
-  altLabel?: string, 
+  items?: FieldItems,
+  key: string,
+  path?: string,
+  label: string,
+  fullLabel?: string,
+  altLabel?: string,
   tooltip?: string,
   disabled?: boolean,
 }
@@ -539,6 +539,9 @@ export interface LocaleSettings {
 }
 
 export interface RenderSettings {
+  classGroup?: ElementType<FieldProps>;
+  classRuleGroup?: ElementType<FieldProps>;
+  classRule?: ElementType<FieldProps>;
   renderField?: Factory<FieldProps>;
   renderOperator?: Factory<FieldProps>;
   renderFunc?: Factory<FieldProps>;
