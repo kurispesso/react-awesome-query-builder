@@ -194,7 +194,7 @@ export class Group extends PureComponent {
     const {config, actions, onDragStart} = props;
     const isRuleGroup = item.get("type") == "group" && item.getIn(["properties", "field"]) != null;
     const type = isRuleGroup ? "rule_group" : item.get("type");
-    
+
     return (
       <Item
         {...this.extraPropsForItem(item)}

@@ -7,10 +7,7 @@ import {RuleGroupActions} from "./RuleGroupActions";
 import {FieldWrapper} from "./Rule";
 import {useOnPropsChanged} from "../utils/stuff";
 
-
-@GroupContainer
-@Draggable("group rule_group")
-class RuleGroup extends Group {
+export class RuleGroup extends Group {
   static propTypes = {
     ...Group.propTypes,
     selectedField: PropTypes.string,
@@ -28,7 +25,7 @@ class RuleGroup extends Group {
   }
 
   childrenClassName = () => "rule_group--children";
-  
+
   renderHeaderWrapper = () => null;
   renderFooterWrapper = () => null;
   renderConjs = () => null;
@@ -68,13 +65,15 @@ class RuleGroup extends Group {
   renderActions() {
     const {config, addRule} = this.props;
 
-    return <RuleGroupActions
-      config={config}
-      addRule={addRule}
-      canAddRule={this.canAddRule()}
-      canDeleteGroup={this.canDeleteGroup()}
-      removeSelf={this.removeSelf}
-    />;
+    return (
+      <RuleGroupActions
+        config={config}
+        addRule={addRule}
+        canAddRule={this.canAddRule()}
+        canDeleteGroup={this.canDeleteGroup()}
+        removeSelf={this.removeSelf}
+      />
+    );
   }
 
   extraPropsForItem(_item) {
@@ -85,4 +84,4 @@ class RuleGroup extends Group {
 }
 
 
-export default RuleGroup;
+export default GroupContainer(Draggable("group rule_group")(RuleGroup));
