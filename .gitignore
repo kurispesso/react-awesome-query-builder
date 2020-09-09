@@ -5,7 +5,6 @@
 node_modules/
 package-lock.json
 npm-debug.log
-/lib/
 .idea
 .eslintcache
 .DS_Store
