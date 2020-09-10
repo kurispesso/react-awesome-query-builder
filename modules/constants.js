@@ -11,7 +11,7 @@ export const SET_OPERATOR = "SET_OPERATOR";
 export const SET_VALUE = "SET_VALUE";
 export const SET_VALUE_SRC = "SET_VALUE_SRC";
 export const SET_OPERATOR_OPTION = "SET_OPERATOR_OPTION";
-
+export const SET_PROPERTY = "SET_PROPERTY";
 export const SET_TREE = "SET_TREE";
 
 export const MOVE_ITEM = "MOVE_ITEM";

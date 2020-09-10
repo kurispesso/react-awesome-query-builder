@@ -29,7 +29,7 @@ export default (Rule) => {
 
     constructor(props) {
       super(props);
-      
+
       this.dummyFn.isDummyFn = true;
     }
 
@@ -57,6 +57,10 @@ export default (Rule) => {
 
     setValueSrc = (delta, srcKey) => {
       this.props.actions.setValueSrc(this.props.path, delta, srcKey);
+    }
+
+    setProperty = (property, value) => {
+      this.props.actions.setProperty(this.props.path, property, value);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -109,6 +113,7 @@ export default (Rule) => {
               isDraggingTempo={true}
               dragging={this.props.dragging}
               setField={this.dummyFn}
+              setProperty={this.dummyFn}
               setOperator={this.dummyFn}
               setOperatorOption={this.dummyFn}
               removeSelf={this.dummyFn}
@@ -134,6 +139,7 @@ export default (Rule) => {
               onDragStart={this.props.onDragStart}
               removeSelf={isInDraggingTempo ? this.dummyFn : this.removeSelf}
               setField={isInDraggingTempo ? this.dummyFn : this.setField}
+              setProperty={isInDraggingTempo ? this.dummyFn : this.setProperty}
               setOperator={isInDraggingTempo ? this.dummyFn : this.setOperator}
               setOperatorOption={isInDraggingTempo ? this.dummyFn : this.setOperatorOption}
               setValue={isInDraggingTempo ? this.dummyFn : this.setValue}

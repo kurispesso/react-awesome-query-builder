@@ -1,5 +1,13 @@
 import * as constants from "../constants";
 
+export const setProperty = (config, path, property, value) => ({
+  type: constants.SET_PROPERTY,
+  path: path,
+  property: property,
+  value: value,
+  config: config
+});
+
 /**
  * @param {object} config
  * @param {Immutable.List} path

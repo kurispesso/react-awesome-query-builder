@@ -1,7 +1,7 @@
 
 import Immutable from "immutable";
 import {
-  expandTreePath, expandTreeSubpath, getItemByPath, fixPathsInTree, 
+  expandTreePath, expandTreeSubpath, getItemByPath, fixPathsInTree,
   getTotalRulesCountInTree, fixEmptyGroupsInTree
 } from "../utils/treeUtils";
 import {
@@ -40,7 +40,7 @@ const addNewGroup = (state, path, properties, config) => {
     state = addItem(state, groupPath, "rule", uuid(), defaultRuleProperties(config), config);
   }
   state = fixPathsInTree(state);
-  
+
   return state;
 };
 
@@ -100,6 +100,18 @@ const removeRule = (state, path, config) => {
 const setNot = (state, path, not) =>
   state.setIn(expandTreePath(path, "properties", "not"), not);
 
+
+/**
+ * @param state
+ * @param path
+ * @param property
+ * @param value
+ * @returns {__Cursor.Cursor | Immutable.List<T> | Immutable.Map<K, V> | List<T> | Map<K, V>}
+ */
+const setProperty = (state, path, property, value) =>
+  state.setIn(expandTreePath(path, "properties", property), value);
+
+
 /**
  * @param {Immutable.Map} state
  * @param {Immutable.List} path
@@ -155,7 +167,7 @@ const moveItem = (state, fromPath, toPath, placement, config) => {
 
   const to = getItemByPath(state, toPath);
   const targetPath = (placement == constants.PLACEMENT_APPEND || placement == constants.PLACEMENT_PREPEND) ? toPath : toPath.pop();
-  const target = (placement == constants.PLACEMENT_APPEND || placement == constants.PLACEMENT_PREPEND) 
+  const target = (placement == constants.PLACEMENT_APPEND || placement == constants.PLACEMENT_PREPEND)
     ? to
     : toPath.size > 1 ? getItemByPath(state, targetPath) : null;
   const targetChildren = target ? target.get("children1") : null;
@@ -164,9 +176,9 @@ const moveItem = (state, fromPath, toPath, placement, config) => {
     return state;
 
   const isSameParent = (source.get("id") == target.get("id"));
-  const isSourceInsideTarget = targetPath.size < sourcePath.size 
+  const isSourceInsideTarget = targetPath.size < sourcePath.size
         && deepEqual(targetPath.toArray(), sourcePath.toArray().slice(0, targetPath.size));
-  const isTargetInsideSource = targetPath.size > sourcePath.size 
+  const isTargetInsideSource = targetPath.size > sourcePath.size
         && deepEqual(sourcePath.toArray(), targetPath.toArray().slice(0, sourcePath.size));
   let sourceSubpathFromTarget = null;
   let targetSubpathFromSource = null;
@@ -191,7 +203,7 @@ const moveItem = (state, fromPath, toPath, placement, config) => {
         if (itemId == to.get("id") && placement == constants.PLACEMENT_BEFORE) {
           r.set(from.get("id"), from);
         }
-                
+
         r.set(itemId, item);
 
         if (itemId == to.get("id") && placement == constants.PLACEMENT_AFTER) {
@@ -362,7 +374,7 @@ const setValue = (state, path, delta, value, valueType, config, __isInternal) =>
   const canFix = false;
   const calculatedValueType = valueType || calculateValueType(value, valueSrc, config);
   const [validateError, fixedValue] = validateValue(config, field, field, operator, value, calculatedValueType, valueSrc, canFix, isEndValue);
-    
+
   const isValid = !validateError;
   if (isValid && fixedValue !== value) {
     // eg, get exact value from listValues (not string)
@@ -376,7 +388,7 @@ const setValue = (state, path, delta, value, valueType, config, __isInternal) =>
     const operatorConfig = getOperatorConfig(config, operator, field);
     const operatorCardinality = operator ? defaultValue(operatorConfig.cardinality, 1) : null;
     const valueSrcs = Array.from({length: operatorCardinality}, (_, i) => (state.getIn(expandTreePath(path, "properties", "valueSrc", i + "")) || null));
-        
+
     if (operatorConfig && operatorConfig.validateValues && valueSrcs.filter(vs => vs == "value" || vs == null).length == operatorCardinality) {
       const values = Array.from({length: operatorCardinality}, (_, i) => (i == delta ? value : state.getIn(expandTreePath(path, "properties", "value", i + "")) || null));
       const jsValues = fieldWidgetDefinition && fieldWidgetDefinition.toJS ? values.map(v => fieldWidgetDefinition.toJS(v, fieldWidgetDefinition)) : values;
@@ -385,7 +397,7 @@ const setValue = (state, path, delta, value, valueType, config, __isInternal) =>
       state = state.setIn(expandTreePath(path, "properties", "valueError", operatorCardinality), rangeValidateError);
     }
   }
-    
+
   const lastValue = state.getIn(expandTreePath(path, "properties", "value", delta + ""));
   const lastError = state.getIn(expandTreePath(path, "properties", "valueError", delta));
   const isLastEmpty = lastValue == undefined;
@@ -437,7 +449,7 @@ const setValueSrc = (state, path, delta, srcKey, config) => {
       state = state.setIn(expandTreePath(path, "properties", "valueError", operatorCardinality), null);
     }
   }
-    
+
   if (typeof srcKey === "undefined") {
     state = state.setIn(expandTreePath(path, "properties", "valueSrc", delta + ""), null);
   } else {
@@ -469,7 +481,7 @@ const checkEmptyGroups = (state, config) => {
 
 
 /**
- * 
+ *
  */
 const calculateValueType = (value, valueSrc, config) => {
   let calculatedValueType = null;
@@ -515,7 +527,7 @@ export default (config) => {
   const emptyTree = defaultRoot(config);
   const emptyState = Object.assign({}, {tree: emptyTree}, emptyDrag);
   const unset = {__isInternalValueChange: undefined};
-    
+
   return (state = emptyState, action) => {
     switch (action.type) {
     case constants.SET_TREE:
@@ -541,6 +553,9 @@ export default (config) => {
 
     case constants.SET_NOT:
       return Object.assign({}, state, {...unset}, {tree: setNot(state.tree, action.path, action.not)});
+
+    case constants.SET_PROPERTY:
+      return Object.assign({}, state, {...unset}, {tree: setProperty(state.tree, action.path, action.property, action.value)});
 
     case constants.SET_FIELD:
       return Object.assign({}, state, {...unset}, {tree: setField(state.tree, action.path, action.field, action.config)});
