@@ -129,6 +129,7 @@ export default (Rule) => {
               config={this.props.config}
               reordableNodesCnt={this.props.reordableNodesCnt}
               totalRulesCnt={this.props.totalRulesCnt}
+              properties={this.props.properties}
             /> : null
             ,
             <Rule
@@ -154,6 +155,7 @@ export default (Rule) => {
               config={this.props.config}
               reordableNodesCnt={this.props.reordableNodesCnt}
               totalRulesCnt={this.props.totalRulesCnt}
+              properties={this.props.properties}
             />
           ]}
         </div>

@@ -154,6 +154,7 @@ export default (Group) => {
               totalRulesCnt={this.props.totalRulesCnt}
               selectedField={this.props.field || null}
               parentField={this.props.parentField || null}
+              properties={this.props.properties}
             /> : null
             ,
             <Group
@@ -182,6 +183,7 @@ export default (Group) => {
               totalRulesCnt={this.props.totalRulesCnt}
               selectedField={this.props.field || null}
               parentField={this.props.parentField || null}
+              properties={this.props.properties}
             />
           ]}
         </div>

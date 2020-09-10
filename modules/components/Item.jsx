@@ -9,8 +9,10 @@ import RuleGroup from "./RuleGroup";
 
 const typeMap = {
   rule: (props) => {
+    const properties = props.properties.toObject();
     const renderProps = {
       ...props.properties.toObject(),
+      properties: properties,
       id: props.id,
       path: props.path,
       actions: props.actions,
@@ -34,9 +36,10 @@ const typeMap = {
     );
   },
   group: (props) => {
-
+    const properties = props.properties.toObject();
     const renderProps = {
-      ...props.properties.toObject(),
+      ...properties,
+      properties: properties,
       id: props.id,
       path: props.path,
       actions: props.actions,
@@ -61,8 +64,10 @@ const typeMap = {
     );
   },
   rule_group: (props) => {
+    const properties = props.properties.toObject();
     const renderProps = {
-      ...props.properties.toObject(),
+      ...properties,
+      properties: properties,
       id: props.id,
       path: props.path,
       actions: props.actions,
