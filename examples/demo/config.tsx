@@ -26,9 +26,9 @@ const {
   FieldTreeSelect,
 } = AntdWidgets;
 
-console.log(Group)
-console.log(RuleGroup)
-console.log(Rule)
+console.log(Group);
+console.log(RuleGroup);
+console.log(Rule);
 
 class RuleGroupEvent extends RuleGroup {}
 class GroupEvent extends Group {}
@@ -69,85 +69,85 @@ export default (skin) => {
     ...InitialConfig.operators,
     // examples of  overriding
     all: {
-      label: 'all',
-      name: 'all',
+      label: "all",
+      name: "all",
       cardinality: 0,
       multiple: false,
       isUnary: true,
       applyTo: [
-        'dictionary',
-        'number',
-        '!struct',
+        "dictionary",
+        "number",
+        "!struct",
       ],
     },
     is: {
-      label: 'is',
-      name: 'is',
+      label: "is",
+      name: "is",
       cardinality: 1,
       multiple: false,
       isUnary: true,
       applyTo: [
-        'dictionary',
+        "dictionary",
       ],
     },
     lt: {
-      label: '<',
-      name: 'lt',
+      label: "<",
+      name: "lt",
       cardinality: 1,
       multiple: false,
       isUnary: true,
       applyTo: [
-        'number',
+        "number",
       ],
     },
     lte: {
-      label: '<=',
-      name: 'lte',
+      label: "<=",
+      name: "lte",
       cardinality: 1,
       multiple: false,
       isUnary: true,
       applyTo: [
-        'number',
+        "number",
       ],
     },
     gt: {
-      label: '>',
-      name: 'gt',
+      label: ">",
+      name: "gt",
       cardinality: 1,
       multiple: false,
       isUnary: true,
       applyTo: [
-        'number',
+        "number",
       ],
     },
     gte: {
-      label: '>=',
-      name: 'gte',
+      label: ">=",
+      name: "gte",
       cardinality: 1,
       multiple: false,
       isUnary: true,
       applyTo: [
-        'number',
+        "number",
       ],
     },
     eq: {
-      label: '==',
-      name: 'eq',
+      label: "==",
+      name: "eq",
       cardinality: 1,
       multiple: false,
       isUnary: true,
       applyTo: [
-        'number',
+        "number",
       ],
     },
     neq: {
-      label: '!=',
-      name: 'neq',
+      label: "!=",
+      name: "neq",
       cardinality: 1,
       multiple: false,
       isUnary: true,
       applyTo: [
-        'number',
+        "number",
       ],
     },
   };
@@ -156,27 +156,27 @@ export default (skin) => {
   const widgets: Widgets = {
     ...InitialConfig.widgets,
     number: {
-      type: 'number',
-      valueSrc: 'value',
+      type: "number",
+      valueSrc: "value",
       //factory: (props) => <NumberWidget {...props} />,
     },
     dictionary: {
-      type: 'dictionary',
-      valueSrc: 'value',
+      type: "dictionary",
+      valueSrc: "value",
       //factory: (props) => <SelectWidget {...props} />,
     },
     func: {
-      type: 'func',
-      valueSrc: 'func',
+      type: "func",
+      valueSrc: "func",
     },
     field: {
-      valueSrc: 'field',
+      valueSrc: "field",
       //factory: (props) => <ValueFieldWidget {...props} />,
       formatValue: (val, fieldDef, wgtDef, isForDisplay, valFieldDef) => {
-        return isForDisplay ? (valFieldDef.label || val) : val
+        return isForDisplay ? (valFieldDef.label || val) : val;
       },
-      valueLabel: 'Field to compare',
-      valuePlaceholder: 'Select field to compare',
+      valueLabel: "Field to compare",
+      valuePlaceholder: "Select field to compare",
       customProps: {
         showSearch: true,
       },
@@ -190,15 +190,15 @@ export default (skin) => {
     dictionary: {
       widgets: {
         dictionary: {
-          operators:  ['all', 'is'],
+          operators:  ["all", "is"],
         },
       },
     },
     number: {
-      valueSources: ['value'],
+      valueSources: ["value"],
       widgets: {
         number: {
-          operators: ['all', 'gte', 'lte', 'gt', 'lt', 'eq', 'neq'],
+          operators: ["all", "gte", "lte", "gt", "lt", "eq", "neq"],
         },
       },
     },

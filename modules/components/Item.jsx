@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import GroupContainer from "./containers/GroupContainer"
-import RuleContainer from "./containers/RuleContainer"
+import GroupContainer from "./containers/GroupContainer";
+import RuleContainer from "./containers/RuleContainer";
 import Draggable from "./containers/Draggable";
 import Rule from "./Rule";
 import Group from "./Group";
@@ -20,18 +20,18 @@ const typeMap = {
       onDragStart: props.onDragStart,
       isDraggingTempo: props.isDraggingTempo,
       parentField: props.parentField,
-    }
+    };
 
-    let Container
+    let Container;
     if(props.config.settings.classRule) {
       Container = RuleContainer(Draggable("rule")(props.config.settings.classRule));
     } else {
-      Container = Rule
+      Container = Rule;
     }
 
     return (
-        <Container {...renderProps} />
-    )
+      <Container {...renderProps} />
+    );
   },
   group: (props) => {
 
@@ -47,18 +47,18 @@ const typeMap = {
       isDraggingTempo: props.isDraggingTempo,
       children1: props.children1,
       parentField: null,
-    }
+    };
 
-    let Container
+    let Container;
     if(props.config.settings.classGroup) {
       Container = GroupContainer(Draggable("group")(props.config.settings.classGroup));
     } else {
-      Container = Group
+      Container = Group;
     }
 
     return (
-        <Container {...renderProps} />
-    )
+      <Container {...renderProps} />
+    );
   },
   rule_group: (props) => {
     const renderProps = {
@@ -73,18 +73,18 @@ const typeMap = {
       isDraggingTempo: props.isDraggingTempo,
       children1: props.children1,
       parentField: props.parentField,
-    }
+    };
 
-    let Container
+    let Container;
     if(props.config.settings.classRuleGroup) {
       Container = GroupContainer(Draggable("group rule_group")(props.config.settings.classRuleGroup));
     } else {
-      Container = RuleGroup
+      Container = RuleGroup;
     }
 
     return (
-        <Container {...renderProps} />
-    )
+      <Container {...renderProps} />
+    );
   }
 };
 

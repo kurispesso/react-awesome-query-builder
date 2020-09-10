@@ -105,29 +105,41 @@ export class Rule extends PureComponent {
       );
     }
 
-    render () {
-      const {config, valueError} = this.props;
+    renderField = () => {
       const {
-        selectedFieldPartsLabels, selectedFieldWidgetConfig,
-        showDragIcon, showOperator, showOperatorLabel, showWidget, showOperatorOptions
-      } = this.meta;
+        config,
+      } = this.props;
+
       const {
-        deleteLabel, renderBeforeWidget, renderAfterWidget, renderSize,
-        immutableGroupsMode, immutableFieldsMode, immutableOpsMode, immutableValuesMode,
-        renderRuleError, showErrorMessage,
-        renderButton: Btn
+        immutableFieldsMode,
+        immutableOpsMode,
       } = config.settings;
 
-      const field
-            = <FieldWrapper
-              key="field"
-              classname={"rule--field"}
-              config={config}
-              selectedField={this.props.selectedField}
-              setField={!immutableOpsMode ? this.props.setField : dummyFn}
-              parentField={this.props.parentField}
-              readonly={immutableFieldsMode}
-            />;
+      const field = (
+        <FieldWrapper
+          key="field"
+          classname={"rule--field"}
+          config={config}
+          selectedField={this.props.selectedField}
+          setField={!immutableOpsMode ? this.props.setField : dummyFn}
+          parentField={this.props.parentField}
+          readonly={immutableFieldsMode}
+        />
+      );
+
+      return field;
+    }
+
+    renderOperator = () => {
+      const {config,} = this.props;
+      const {
+        selectedFieldPartsLabels, selectedFieldWidgetConfig,
+        showOperator, showOperatorLabel,
+      } = this.meta;
+      const {
+        immutableOpsMode,
+      } = config.settings;
+
       const operator
             = <OperatorWrapper
               key="operator"
@@ -141,6 +153,18 @@ export class Rule extends PureComponent {
               selectedFieldWidgetConfig={selectedFieldWidgetConfig}
               readonly={immutableOpsMode}
             />;
+
+      return operator;
+    }
+
+    renderWidget = () => {
+      const {config, valueError} = this.props;
+      const {
+        showWidget,
+      } = this.meta;
+      const {
+        immutableValuesMode,
+      } = config.settings;
 
       const widget = showWidget
             && <Col key={"widget-for-"+this.props.selectedOperator} className="rule--value">
@@ -157,6 +181,21 @@ export class Rule extends PureComponent {
                 readonly={immutableValuesMode}
               />
             </Col>;
+
+      return widget;
+    }
+
+    renderOperatorOptions = () => {
+      const {config} = this.props;
+      const {
+        showOperatorOptions
+      } = this.meta;
+
+      const {
+        immutableOpsMode,
+        immutableValuesMode,
+      } = config.settings;
+
       const operatorOptions = showOperatorOptions
             && <Col key={"op-options-for-"+this.props.selectedOperator} className="rule--operator-options">
               <OperatorOptions
@@ -170,30 +209,102 @@ export class Rule extends PureComponent {
               />
             </Col>;
 
+      return operatorOptions;
+    }
+
+    renderBeforeWidget = () => {
+      const {config} = this.props;
+
+      const {
+        renderBeforeWidget,
+      } = config.settings;
+
       const beforeWidget = renderBeforeWidget
             && <Col key={"before-widget-for-" +this.props.selectedOperator} className="rule--before-widget">
               {typeof renderBeforeWidget === "function" ? renderBeforeWidget(this.props) : renderBeforeWidget}
             </Col>;
+
+      return beforeWidget;
+    }
+
+    renderAfterWidget = () => {
+      const {config} = this.props;
+
+      const {
+        renderAfterWidget,
+      } = config.settings;
 
       const afterWidget = renderAfterWidget
             && <Col key={"after-widget-for-" +this.props.selectedOperator} className="rule--after-widget">
               {typeof renderAfterWidget === "function" ? renderAfterWidget(this.props) : renderAfterWidget}
             </Col>;
 
-      const oneValueError = valueError && valueError.toArray().filter(e => !!e).shift() || null;
-      const error = showErrorMessage && oneValueError
-            && <div className="rule--error">
-              {renderRuleError ? renderRuleError({error: oneValueError}) : oneValueError}
-            </div>;
+      return afterWidget;
+    }
 
-      const parts = [
-        field,
-        operator,
-        beforeWidget,
-        widget,
-        afterWidget,
-        operatorOptions,
-      ];
+    renderError = () => {
+      const {
+        config,
+        valueError
+      } = this.props;
+
+      const {
+        showErrorMessage,
+      } = config.settings;
+
+      if(!showErrorMessage) {
+        return null;
+      } else {
+        const {
+          renderRuleError,
+        } = config.settings;
+
+        const {
+          valueError
+        } = this.props;
+
+        const oneValueError = valueError && valueError.toArray().filter(e => !!e).shift() || null;
+
+        if(!oneValueError) {
+          return null;
+        } else {
+          const error = (
+            <div className="rule--error">
+              {renderRuleError ? renderRuleError({error: oneValueError}) : oneValueError}
+            </div>
+          );
+
+          return error;
+        }
+      }
+    }
+
+    renderHeader = () => {
+      const {
+        config
+      } = this.props;
+
+      const {
+        deleteLabel,
+        immutableGroupsMode,
+        renderButton: Btn
+      } = config.settings;
+
+      const header = (
+        <div key="rule-header" className="rule--header">
+          {!immutableGroupsMode && <Btn
+            type="delRule" onClick={this.removeSelf} label={deleteLabel} config={config}
+          />}
+        </div>
+      );
+
+      return header;
+    }
+
+    renderDrag = () => {
+      const {
+        showDragIcon
+      } = this.meta;
 
       const drag = showDragIcon
             && <span
@@ -203,23 +314,25 @@ export class Rule extends PureComponent {
             ><DragIcon /> </span>
         ;
 
-      const del = (
-        <div key="rule-header" className="rule--header">
-          {!immutableGroupsMode && <Btn
-            type="delRule" onClick={this.removeSelf} label={deleteLabel} config={config}
-          />}
-        </div>
-      );
+      return drag;
+    }
 
-      const body = <div key="rule-body" className="rule--body">{parts}</div>;
-
+    render () {
       return (
         <>
-          {drag}
+          {this.renderDrag()}
           <div className="rule--body--wrapper">
-            {body}{error}
+            <div key="rule-body" className="rule--body">
+              {this.renderField()}
+              {this.renderOperator()}
+              {this.renderBeforeWidget()}
+              {this.renderWidget()}
+              {this.renderAfterWidget()}
+              {this.renderOperatorOptions()}
+            </div>
+            {this.renderError()}
           </div>
-          {del}
+          {this.renderHeader()}
         </>
       );
     }
