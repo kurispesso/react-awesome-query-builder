@@ -9,6 +9,7 @@ import {useOnPropsChanged} from "../../utils/stuff";
 export default (Group) => {
   class GroupContainer extends Component {
     static propTypes = {
+      classComponent: PropTypes.elementType,
       //tree: PropTypes.instanceOf(Immutable.Map).isRequired,
       config: PropTypes.object.isRequired,
       actions: PropTypes.object.isRequired, //{setConjunction: Funciton, removeGroup, addGroup, addRule, ...}
@@ -122,13 +123,20 @@ export default (Group) => {
       const allowFurtherNesting = typeof maxNesting === "undefined" || currentNesting < maxNesting;
       const isRoot = currentNesting == 1;
 
+      let ClassComponent;
+      if(this.props.classComponent) {
+        ClassComponent = this.props.classComponent;
+      } else {
+        ClassComponent = Group;
+      }
+
       return (
         <div
           className={"group-or-rule-container group-container"}
           data-id={this.props.id}
         >
           {[
-            isDraggingMe ? <Group
+            isDraggingMe ? <ClassComponent
               key={"dragging"}
               id={this.props.id}
               isDraggingMe={true}
@@ -157,7 +165,7 @@ export default (Group) => {
               properties={this.props.properties}
             /> : null
             ,
-            <Group
+            <ClassComponent
               key={this.props.id}
               id={this.props.id}
               isDraggingMe={isDraggingMe}

@@ -9,6 +9,7 @@ const classNames = require("classnames");
 export default (Rule) => {
   class RuleContainer extends Component {
     static propTypes = {
+      classComponent: PropTypes.elementType,
       id: PropTypes.string.isRequired,
       config: PropTypes.object.isRequired,
       path: PropTypes.any.isRequired, //instanceOf(Immutable.List)
@@ -100,13 +101,20 @@ export default (Rule) => {
       const oneValueError = valueError && valueError.toArray().filter(e => !!e).shift() || null;
       const hasError = oneValueError != null && showErrorMessage;
 
+      let ClassComponent;
+      if(this.props.classComponent) {
+        ClassComponent = this.props.classComponent;
+      } else {
+        ClassComponent = Rule;
+      }
+
       return (
         <div
           className={classNames("group-or-rule-container", "rule-container", hasError ? "rule-with-error" : null)}
           data-id={this.props.id}
         >
           {[
-            isDraggingMe ? <Rule
+            isDraggingMe ? <ClassComponent
               key={"dragging"}
               id={this.props.id}
               isDraggingMe={true}
@@ -132,7 +140,7 @@ export default (Rule) => {
               properties={this.props.properties}
             /> : null
             ,
-            <Rule
+            <ClassComponent
               key={this.props.id}
               id={this.props.id}
               isDraggingMe={isDraggingMe}

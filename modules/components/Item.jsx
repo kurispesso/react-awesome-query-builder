@@ -10,6 +10,7 @@ import RuleGroup from "./RuleGroup";
 const typeMap = {
   rule: (props) => {
     const properties = props.properties.toObject();
+
     const renderProps = {
       ...props.properties.toObject(),
       properties: properties,
@@ -24,15 +25,12 @@ const typeMap = {
       parentField: props.parentField,
     };
 
-    let Container;
     if(props.config.settings.classRule) {
-      Container = RuleContainer(Draggable("rule")(props.config.settings.classRule));
-    } else {
-      Container = Rule;
+      renderProps.classComponent = props.config.settings.classRule;
     }
 
     return (
-      <Container {...renderProps} />
+      <Rule {...renderProps} />
     );
   },
   group: (props) => {
@@ -52,15 +50,12 @@ const typeMap = {
       parentField: null,
     };
 
-    let Container;
     if(props.config.settings.classGroup) {
-      Container = GroupContainer(Draggable("group")(props.config.settings.classGroup));
-    } else {
-      Container = Group;
+      renderProps.classComponent = props.config.settings.classGroup;
     }
 
     return (
-      <Container {...renderProps} />
+      <Group {...renderProps} />
     );
   },
   rule_group: (props) => {
@@ -80,15 +75,12 @@ const typeMap = {
       parentField: props.parentField,
     };
 
-    let Container;
     if(props.config.settings.classRuleGroup) {
-      Container = GroupContainer(Draggable("group rule_group")(props.config.settings.classRuleGroup));
-    } else {
-      Container = RuleGroup;
+      renderProps.classComponent = props.config.settings.classRuleGroup;
     }
 
     return (
-      <Container {...renderProps} />
+      <RuleGroup {...renderProps} />
     );
   }
 };
