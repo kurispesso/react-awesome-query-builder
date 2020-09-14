@@ -212,6 +212,7 @@ export class Group extends PureComponent {
         totalRulesCnt={this.props.totalRulesCnt}
         onDragStart={onDragStart}
         isDraggingTempo={this.props.isDraggingTempo}
+        removeSelf={this.removeSelf}
       />
     );
   }

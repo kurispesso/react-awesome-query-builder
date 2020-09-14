@@ -48,6 +48,7 @@ const typeMap = {
       isDraggingTempo: props.isDraggingTempo,
       children1: props.children1,
       parentField: null,
+      removeSelf: props.removeSelf
     };
 
     if(props.config.settings.classGroup) {
