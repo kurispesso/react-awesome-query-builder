@@ -41,6 +41,7 @@ export default class FieldSelect extends PureComponent {
     const {
       config, customProps, items, placeholder,
       selectedKey, selectedLabel, selectedOpts, selectedAltLabel, selectedFullLabel, readonly,
+      removeSelf
     } = this.props;
     const {showSearch} = customProps || {};
 

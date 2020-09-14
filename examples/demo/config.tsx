@@ -26,10 +26,6 @@ const {
   FieldTreeSelect,
 } = AntdWidgets;
 
-console.log(Group);
-console.log(RuleGroup);
-console.log(Rule);
-
 class RuleGroupEvent extends RuleGroup {}
 class GroupEvent extends Group {}
 class RuleEvent extends Rule {}

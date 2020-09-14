@@ -124,6 +124,7 @@ export class Rule extends PureComponent {
           setField={!immutableOpsMode ? this.props.setField : dummyFn}
           parentField={this.props.parentField}
           readonly={immutableFieldsMode}
+          removeSelf={!immutableOpsMode ? this.removeSelf : dummyFn}
         />
       );
 
@@ -342,7 +343,7 @@ export class Rule extends PureComponent {
 
 export class FieldWrapper extends PureComponent {
   render() {
-    const {config, selectedField, setField, parentField, classname, readonly} = this.props;
+    const {config, selectedField, setField, parentField, classname, readonly, removeSelf} = this.props;
     return (
       <Col className={classname}>
         { config.settings.showLabels
@@ -355,6 +356,7 @@ export class FieldWrapper extends PureComponent {
           setField={setField}
           customProps={config.settings.customFieldSelectProps}
           readonly={readonly}
+          removeSelf={removeSelf}
         />
       </Col>
     );
