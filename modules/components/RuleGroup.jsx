@@ -59,6 +59,7 @@ export class RuleGroup extends Group {
       setField={this.props.setField}
       parentField={this.props.parentField}
       readonly={immutableFieldsMode}
+      removeSelf={this.removeSelf}
     />;
   }
 
