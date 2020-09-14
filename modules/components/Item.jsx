@@ -23,6 +23,9 @@ const typeMap = {
       onDragStart: props.onDragStart,
       isDraggingTempo: props.isDraggingTempo,
       parentField: props.parentField,
+      removeSelf: props.removeSelf,
+      addRule: props.addRule,
+      addGroup: props.addGroup,
     };
 
     if(props.config.settings.classRule) {
@@ -48,7 +51,9 @@ const typeMap = {
       isDraggingTempo: props.isDraggingTempo,
       children1: props.children1,
       parentField: null,
-      removeSelf: props.removeSelf
+      removeSelf: props.removeSelf,
+      addRule: props.addRule,
+      addGroup: props.addGroup,
     };
 
     if(props.config.settings.classGroup) {
@@ -74,6 +79,9 @@ const typeMap = {
       isDraggingTempo: props.isDraggingTempo,
       children1: props.children1,
       parentField: props.parentField,
+      removeSelf: props.removeSelf,
+      addRule: props.addRule,
+      addGroup: props.addGroup,
     };
 
     if(props.config.settings.classRuleGroup) {

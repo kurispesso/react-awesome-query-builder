@@ -191,7 +191,7 @@ export class Group extends PureComponent {
 
   renderItem(item) {
     const props = this.props;
-    const {config, actions, onDragStart} = props;
+    const {config, actions, onDragStart, addRule, addGroup} = props;
     const isRuleGroup = item.get("type") == "group" && item.getIn(["properties", "field"]) != null;
     const type = isRuleGroup ? "rule_group" : item.get("type");
 
@@ -213,6 +213,8 @@ export class Group extends PureComponent {
         onDragStart={onDragStart}
         isDraggingTempo={this.props.isDraggingTempo}
         removeSelf={this.removeSelf}
+        addRule={addRule}
+        addGroup={addGroup}
       />
     );
   }
