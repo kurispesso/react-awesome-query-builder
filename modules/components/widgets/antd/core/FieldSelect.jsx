@@ -76,7 +76,7 @@ export default class FieldSelect extends PureComponent {
       res = <Tooltip title={tooltipText}>{res}</Tooltip>;
     }
 
-    return  <div>{res}<div onClick={removeSelf}>1111</div></div>;
+    return res;
   }
 
   renderSelectItems(fields) {
