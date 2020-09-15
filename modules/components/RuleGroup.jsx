@@ -87,4 +87,4 @@ export class RuleGroup extends Group {
 }
 
 
-export default GroupContainer(Draggable("group rule_group")(RuleGroup));
+export default Draggable("group rule_group")(GroupContainer(RuleGroup));

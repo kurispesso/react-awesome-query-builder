@@ -280,4 +280,4 @@ export class Group extends PureComponent {
   }
 }
 
-export default GroupContainer(Draggable("group")(Group));
+export default Draggable("group")(GroupContainer(Group));
