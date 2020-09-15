@@ -96,11 +96,20 @@ export default (Group) => {
 
     addGroup = () => {
       this.props.actions.addGroup(this.props.path);
+  }
+
+  addRule = () => {
+    let defaultPropertiesRule = {}
+
+    if(this.props.config.settings.defaultPropertiesRule) {
+      defaultPropertiesRule = {
+        ...defaultPropertiesRule,
+        ...this.props.config.settings.defaultPropertiesRule
+      }
     }
 
-    addRule = () => {
-      this.props.actions.addRule(this.props.path);
-    }
+    this.props.actions.addRule(this.props.path, defaultPropertiesRule);
+  }
 
     // for RuleGroup
     setField = (field) => {
