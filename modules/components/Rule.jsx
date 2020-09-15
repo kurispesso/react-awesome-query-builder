@@ -409,4 +409,4 @@ class OperatorWrapper extends PureComponent {
   }
 }
 
-export default Draggable("rule")(RuleContainer(Rule));
+export default RuleContainer(Draggable("rule")(Rule));

@@ -1,7 +1,5 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import GroupContainer from "./containers/GroupContainer";
-import RuleContainer from "./containers/RuleContainer";
 import Draggable from "./containers/Draggable";
 import Rule from "./Rule";
 import Group from "./Group";
@@ -29,7 +27,7 @@ const typeMap = {
     };
 
     if(props.config.settings.classRule) {
-      renderProps.classComponent = props.config.settings.classRule;
+      renderProps.classComponent = Draggable("rule")(props.config.settings.classRule);
     }
 
     return (
@@ -57,7 +55,7 @@ const typeMap = {
     };
 
     if(props.config.settings.classGroup) {
-      renderProps.classComponent = props.config.settings.classGroup;
+      renderProps.classComponent = Draggable("group")(props.config.settings.classGroup);
     }
 
     return (
@@ -85,7 +83,7 @@ const typeMap = {
     };
 
     if(props.config.settings.classRuleGroup) {
-      renderProps.classComponent = props.config.settings.classRuleGroup;
+      renderProps.classComponent = Draggable("group rule_group")(props.config.settings.classRuleGroup);
     }
 
     return (
