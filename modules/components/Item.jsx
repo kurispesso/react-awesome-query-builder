@@ -5,6 +5,8 @@ import Rule from "./Rule";
 import Group from "./Group";
 import RuleGroup from "./RuleGroup";
 
+const cacheTypeMap = {};
+
 const typeMap = {
   rule: (props) => {
     const properties = props.properties.toObject();
@@ -27,7 +29,10 @@ const typeMap = {
     };
 
     if(props.config.settings.classRule) {
-      renderProps.classComponent = Draggable("rule")(props.config.settings.classRule);
+      if(!cacheTypeMap[props.config.settings.classRule]) {
+        cacheTypeMap[props.config.settings.classRule] = Draggable("rule")(props.config.settings.classRule);
+      }
+      renderProps.classComponent = cacheTypeMap[props.config.settings.classRule];
     }
 
     return (
@@ -55,7 +60,10 @@ const typeMap = {
     };
 
     if(props.config.settings.classGroup) {
-      renderProps.classComponent = Draggable("group")(props.config.settings.classGroup);
+      if(!cacheTypeMap[props.config.settings.classGroup]) {
+        cacheTypeMap[props.config.settings.classGroup] =  Draggable("group")(props.config.settings.classGroup);
+      }
+      renderProps.classComponent = cacheTypeMap[props.config.settings.classGroup];
     }
 
     return (
@@ -83,7 +91,10 @@ const typeMap = {
     };
 
     if(props.config.settings.classRuleGroup) {
-      renderProps.classComponent = Draggable("group rule_group")(props.config.settings.classRuleGroup);
+      if(!cacheTypeMap[props.config.settings.classRuleGroup]) {
+        cacheTypeMap[props.config.settings.classRuleGroup] = Draggable("group rule_group")(props.config.settings.classRuleGroup);
+      }
+      renderProps.classComponent = cacheTypeMap[props.config.settings.classRuleGroup];
     }
 
     return (
