@@ -6,7 +6,7 @@ import {getNewValueForFieldOp} from "../utils/validation";
 
 export const defaultField = (config, canGetFirst = true, parentRuleGroupPath = null) => {
   return typeof config.settings.defaultField === "function"
-    ? config.settings.defaultField(parentRuleGroupPath) 
+    ? config.settings.defaultField(parentRuleGroupPath)
     : (config.settings.defaultField || (canGetFirst ? getFirstField(config, parentRuleGroupPath) : null));
 };
 
@@ -41,7 +41,17 @@ export const defaultRuleProperties = (config, parentRuleGroupPath = null) => {
     field = defaultField(config, true, parentRuleGroupPath);
     operator = defaultOperator(config, field);
   }
+
+  let defaultPropertiesRule = {};
+  if(config.settings.defaultPropertiesRule) {
+    defaultPropertiesRule = {
+      ...defaultPropertiesRule,
+      ...config.settings.defaultPropertiesRule
+    };
+  }
+
   let current = new Immutable.Map({
+    ...defaultPropertiesRule,
     field: field,
     operator: operator,
     value: new Immutable.List(),
@@ -52,7 +62,7 @@ export const defaultRuleProperties = (config, parentRuleGroupPath = null) => {
   if (showErrorMessage) {
     current = current.set("valueError", new Immutable.List());
   }
-  
+
   if (field && operator) {
     let {newValue, newValueSrc, newValueType, newValueError} = getNewValueForFieldOp(config, config, current, field, operator, "operator", false);
     current = current
@@ -64,7 +74,7 @@ export const defaultRuleProperties = (config, parentRuleGroupPath = null) => {
         .set("valueError", newValueError);
     }
   }
-  return current; 
+  return current;
 };
 
 //------------
@@ -91,7 +101,7 @@ export const defaultRoot = (config) => {
   if (config.tree) {
     return new Immutable.Map(config.tree);
   }
-  
+
   return new Immutable.Map({
     type: "group",
     id: uuid(),

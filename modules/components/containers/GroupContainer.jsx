@@ -99,16 +99,7 @@ export default (Group) => {
     }
 
   addRule = () => {
-    let defaultPropertiesRule = {};
-
-    if(this.props.config.settings.defaultPropertiesRule) {
-      defaultPropertiesRule = {
-        ...defaultPropertiesRule,
-        ...this.props.config.settings.defaultPropertiesRule
-      };
-    }
-
-    this.props.actions.addRule(this.props.path, defaultPropertiesRule);
+    this.props.actions.addRule(this.props.path);
   }
 
     // for RuleGroup
