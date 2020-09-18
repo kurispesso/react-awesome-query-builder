@@ -16,7 +16,17 @@ import pick from "lodash/pick";
 const configKeys = ["conjunctions", "fields", "types", "operators", "widgets", "settings", "funcs"];
 
 const validateAndFixTree = (newTree, _oldTree, newConfig, oldConfig) => {
-  let tree = validateTree(newTree, _oldTree, newConfig, oldConfig, true, true);
+  let removeEmptyGroups = true;
+  if(typeof newConfig.settings.validateTreeRemoveEmptyGroups !== "undefined") {
+    removeEmptyGroups = !!newConfig.settings.validateTreeRemoveEmptyGroups;
+  }
+
+  let removeInvalidRules = true;
+  if(typeof newConfig.settings.validateTreeRemoveInvalidRules !== "undefined") {
+    removeInvalidRules = !!newConfig.settings.validateTreeRemoveInvalidRules;
+  }
+
+  let tree = validateTree(newTree, _oldTree, newConfig, oldConfig, removeEmptyGroups, removeInvalidRules);
   tree = fixPathsInTree(tree);
   return tree;
 };
@@ -136,7 +146,7 @@ export default class QueryContainer extends Component {
     onPropsChanged(nextProps) {
       if (this.props.dontDispatchOnNewProps)
         return;
-        
+
       // compare configs
       const oldConfig = pick(this.props, configKeys);
       let nextConfig = pick(nextProps, configKeys);
@@ -145,7 +155,7 @@ export default class QueryContainer extends Component {
         nextConfig = extendConfig(nextConfig);
         this.setState({config: nextConfig});
       }
-        
+
       // compare trees
       const storeValue = this.state.store.getState().tree;
       const isTreeChanged = !immutableEqual(nextProps.value, this.props.value) && !immutableEqual(nextProps.value, storeValue);

@@ -37,8 +37,8 @@ export class Rule extends PureComponent {
       setOperator: PropTypes.func,
       setOperatorOption: PropTypes.func,
       removeSelf: PropTypes.func,
-        addRule: PropTypes.func,
-        addGroup: PropTypes.func,
+      addRule: PropTypes.func,
+      addGroup: PropTypes.func,
       setValue: PropTypes.func,
       setValueSrc: PropTypes.func,
       reordableNodesCnt: PropTypes.number,
@@ -108,7 +108,7 @@ export class Rule extends PureComponent {
     }
 
     renderField = () => {
-        const {
+      const {
         config,
         addRule,
         addGroup
@@ -350,7 +350,7 @@ export class Rule extends PureComponent {
 export class FieldWrapper extends PureComponent {
   render() {
     const {config, selectedField, setField, parentField, classname, readonly, removeSelf,
-        addRule, addGroup} = this.props;
+      addRule, addGroup} = this.props;
     return (
       <Col className={classname}>
         { config.settings.showLabels

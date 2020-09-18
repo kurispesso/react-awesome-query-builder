@@ -96,16 +96,16 @@ export default (Group) => {
 
     addGroup = () => {
       this.props.actions.addGroup(this.props.path);
-  }
+    }
 
   addRule = () => {
-    let defaultPropertiesRule = {}
+    let defaultPropertiesRule = {};
 
     if(this.props.config.settings.defaultPropertiesRule) {
       defaultPropertiesRule = {
         ...defaultPropertiesRule,
         ...this.props.config.settings.defaultPropertiesRule
-      }
+      };
     }
 
     this.props.actions.addRule(this.props.path, defaultPropertiesRule);
