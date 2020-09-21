@@ -120,7 +120,7 @@ export default class Field extends PureComponent {
     }
 
     render() {
-      const {config, customProps, setField, removeSelf, addRule, addGroup, readonly} = this.props;
+      const {config, customProps, setField, removeSelf, addRule, addGroup, setProperty, readonly} = this.props;
       const {renderField} = config.settings;
       const renderProps = {
         config,
@@ -130,6 +130,7 @@ export default class Field extends PureComponent {
         removeSelf,
         addRule,
         addGroup,
+        setProperty,
         ...this.meta
       };
       return renderField(renderProps);

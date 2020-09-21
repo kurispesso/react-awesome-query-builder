@@ -82,8 +82,8 @@ const removeRule = (state, path, config) => {
   if (isEmptyGroup) {
     if (isParentRuleGroup) {
       let canDeleteRuleGroupIfEmpty = true;
-      if(typeof config.settings.canDeleteRuleGroupIfEmpty !== 'undefined') {
-        canDeleteRuleGroupIfEmpty = config.settings.canDeleteRuleGroupIfEmpty
+      if (typeof config.settings.canDeleteRuleGroupIfEmpty !== "undefined") {
+        canDeleteRuleGroupIfEmpty = config.settings.canDeleteRuleGroupIfEmpty;
       }
       if(canDeleteRuleGroupIfEmpty) {
         state = state.deleteIn(expandTreePath(parentPath));

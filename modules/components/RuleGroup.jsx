@@ -62,6 +62,7 @@ export class RuleGroup extends Group {
       removeSelf={this.removeSelf}
       addRule={this.props.addRule}
       addGroup={this.props.addGroup}
+      setProperty={this.props.setProperty}
     />;
   }
 
