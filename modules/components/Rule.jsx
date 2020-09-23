@@ -112,7 +112,8 @@ export class Rule extends PureComponent {
         config,
         addRule,
         addGroup,
-        setProperty
+        setProperty,
+        properties,
       } = this.props;
 
       const {
@@ -133,6 +134,7 @@ export class Rule extends PureComponent {
           addRule={addRule}
           addGroup={addGroup}
           setProperty={setProperty}
+          properties={properties}
         />
       );
 
@@ -352,7 +354,7 @@ export class Rule extends PureComponent {
 export class FieldWrapper extends PureComponent {
   render() {
     const {config, selectedField, setField, parentField, classname, readonly, removeSelf,
-      addRule, addGroup, setProperty} = this.props;
+      addRule, addGroup, setProperty, properties} = this.props;
     return (
       <Col className={classname}>
         { config.settings.showLabels
@@ -369,6 +371,7 @@ export class FieldWrapper extends PureComponent {
           addRule={addRule}
           addGroup={addGroup}
           setProperty={setProperty}
+          properties={properties}
         />
       </Col>
     );
