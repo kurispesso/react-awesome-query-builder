@@ -63,6 +63,7 @@ export class RuleGroup extends Group {
       addRule={this.props.addRule}
       addGroup={this.props.addGroup}
       setProperty={this.props.setProperty}
+      properties={this.props.properties}
     />;
   }
 
