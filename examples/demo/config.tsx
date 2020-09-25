@@ -263,6 +263,7 @@ export default (skin) => {
     // renderOperator: (props) => <FieldDropdown {...props} />,
     // renderFunc: (props) => <FieldSelect {...props} />,
     // maxNumberOfRules: 10 // number of rules can be added to the query builder
+    canLeaveEmptyRoot: false,
   };
 
   //////////////////////////////////////////////////////////////////////

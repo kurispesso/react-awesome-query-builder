@@ -89,7 +89,13 @@ const removeRule = (state, path, config) => {
         state = state.deleteIn(expandTreePath(parentPath));
       }
     } else if (isEmptyRoot) {
-      state = addItem(state, parentPath, "rule", uuid(), defaultRuleProperties(config, parentField), config);
+      let canLeaveEmptyRoot = true;
+      if (typeof config.settings.canLeaveEmptyRoot !== "undefined") {
+        canLeaveEmptyRoot = config.settings.canLeaveEmptyRoot;
+      }
+      if(canLeaveEmptyRoot) {
+        state = addItem(state, parentPath, "rule", uuid(), defaultRuleProperties(config, parentField), config);
+      }
     } else if (!canLeaveEmpty) {
       state = fixEmptyGroupsInTree(state);
     }
