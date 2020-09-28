@@ -281,7 +281,7 @@ const setField = (state, path, newField, config) => {
       unsafePropertiesRuleGroup.map((unsafePropertyRuleGroup) => {
         const valueUnsafePropertyRuleGroup = currentProperties.get(unsafePropertyRuleGroup);
         if(valueUnsafePropertyRuleGroup) {
-          defaultUnsafePropertiesRuleGroup = valueUnsafePropertyRuleGroup
+          defaultUnsafePropertiesRuleGroup[unsafePropertyRuleGroup] = valueUnsafePropertyRuleGroup
         }
       })
     }
