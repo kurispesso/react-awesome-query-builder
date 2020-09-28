@@ -277,10 +277,11 @@ const setField = (state, path, newField, config) => {
 
   if (isRuleGroup) {
     let defaultUnsafePropertiesRuleGroup = {};
-    if(unsafePropertiesRuleGroup) {
+    if(unsafePropertiesRuleGroup && currentProperties) {
       unsafePropertiesRuleGroup.map((unsafePropertyRuleGroup) => {
-        if(currentProperties[unsafePropertyRuleGroup]) {
-          defaultUnsafePropertiesRuleGroup = currentProperties[unsafePropertyRuleGroup]
+        const valueUnsafePropertyRuleGroup = currentProperties.get(unsafePropertyRuleGroup);
+        if(valueUnsafePropertyRuleGroup) {
+          defaultUnsafePropertiesRuleGroup = valueUnsafePropertyRuleGroup
         }
       })
     }
