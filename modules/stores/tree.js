@@ -253,11 +253,13 @@ const setField = (state, path, newField, config) => {
   if (!newField)
     return removeItem(state, path);
 
-  const {fieldSeparator, setOpOnChangeField, showErrorMessage} = config.settings;
+  const {fieldSeparator, setOpOnChangeField, showErrorMessage, unsafePropertiesRuleGroup} = config.settings;
   if (Array.isArray(newField))
     newField = newField.join(fieldSeparator);
 
   const currentType = state.getIn(expandTreePath(path, "type"));
+  const currentProperties = state.getIn(expandTreePath(path, "properties"));
+
   const wasRuleGroup = currentType == "rule_group";
   const newFieldConfig = getFieldConfig(newField, config);
   const isRuleGroup = newFieldConfig.type == "!group";
@@ -274,8 +276,18 @@ const setField = (state, path, newField, config) => {
   }
 
   if (isRuleGroup) {
+    let defaultUnsafePropertiesRuleGroup = {};
+    if(unsafePropertiesRuleGroup) {
+      unsafePropertiesRuleGroup.map((unsafePropertyRuleGroup) => {
+        if(currentProperties[unsafePropertyRuleGroup]) {
+          defaultUnsafePropertiesRuleGroup = currentProperties[unsafePropertyRuleGroup]
+        }
+      })
+    }
+
     state = state.setIn(expandTreePath(path, "type"), "rule_group");
     let groupProperties = defaultGroupProperties(config).merge({
+      ...defaultUnsafePropertiesRuleGroup,
       field: newField,
     });
     state = state.setIn(expandTreePath(path, "properties"), groupProperties);
