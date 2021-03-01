@@ -80,6 +80,21 @@ export default class Field extends PureComponent {
 
       return keys(fields).map(fieldKey => {
         const field = fields[fieldKey];
+
+        if(typeof field.hideForSelect !== 'undefined') {
+          if (typeof field.hideForSelect === 'boolean') {
+            if(field.hideForSelect) {
+              return undefined;
+            }
+          } else {
+            if (typeof field.hideForSelect === 'function') {
+              if(field.hideForSelect(field, this.props)) {
+                return undefined;
+              }
+            }
+          }
+        }
+
         const label = this.getFieldLabel(field, fieldKey, config);
         const partsLabels = getFieldPathLabels(prefix+fieldKey, config);
         let fullLabel = partsLabels.join(fieldSeparatorDisplay);
@@ -89,9 +104,6 @@ export default class Field extends PureComponent {
         const tooltip = field.tooltip;
         const subpath = (path ? path : []).concat(fieldKey);
         const disabled = field.disabled;
-
-        if (field.hideForSelect)
-          return undefined;
 
         if (field.type == "!struct") {
           return {
