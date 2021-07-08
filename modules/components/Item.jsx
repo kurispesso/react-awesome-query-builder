@@ -29,15 +29,15 @@ const typeMap = {
     };
 
     if(props.config.settings.classRule) {
-      if(!cacheTypeMap[props.config.settings.classRule]) {
+      if(!cacheTypeMap['classRule']) {
         let classRuleClassName = "rule";
         if(props.config.settings.classRuleClassName) {
           classRuleClassName = props.config.settings.classRuleClassName;
         }
 
-        cacheTypeMap[props.config.settings.classRule] = Draggable(classRuleClassName)(props.config.settings.classRule);
+        cacheTypeMap['classRule'] = Draggable(classRuleClassName)(props.config.settings.classRule);
       }
-      renderProps.classComponent = cacheTypeMap[props.config.settings.classRule];
+      renderProps.classComponent = cacheTypeMap['classRule'];
     }
 
     return (
@@ -65,15 +65,15 @@ const typeMap = {
     };
 
     if(props.config.settings.classGroup) {
-      if(!cacheTypeMap[props.config.settings.classGroup]) {
+      if(!cacheTypeMap['classGroup']) {
         let classGroupClassName = "group";
         if(props.config.settings.classGroupClassName) {
           classGroupClassName = props.config.settings.classGroupClassName;
         }
 
-        cacheTypeMap[props.config.settings.classGroup] =  Draggable(classGroupClassName)(props.config.settings.classGroup);
+        cacheTypeMap['classGroup'] =  Draggable(classGroupClassName)(props.config.settings.classGroup);
       }
-      renderProps.classComponent = cacheTypeMap[props.config.settings.classGroup];
+      renderProps.classComponent = cacheTypeMap['classGroup'];
     }
 
     return (
@@ -101,15 +101,15 @@ const typeMap = {
     };
 
     if(props.config.settings.classRuleGroup) {
-      if(!cacheTypeMap[props.config.settings.classRuleGroup]) {
+      if(!cacheTypeMap['classRuleGroup']) {
         let classRuleGroupClassName = "group rule_group";
         if(props.config.settings.classRuleGroupClassName) {
           classRuleGroupClassName = props.config.settings.classRuleGroupClassName;
         }
 
-        cacheTypeMap[props.config.settings.classRuleGroup] = Draggable(classRuleGroupClassName)(props.config.settings.classRuleGroup);
+        cacheTypeMap['classRuleGroup'] = Draggable(classRuleGroupClassName)(props.config.settings.classRuleGroup);
       }
-      renderProps.classComponent = cacheTypeMap[props.config.settings.classRuleGroup];
+      renderProps.classComponent = cacheTypeMap['classRuleGroup'];
     }
 
     return (
